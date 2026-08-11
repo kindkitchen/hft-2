@@ -1,0 +1,17 @@
+.DS_Store
+.env
+.env.local
+*.local
+node_modules/
+dist/
+target/
+
+# ai-harness
+.claude/
+.opencode/
+.pi/
+.agents/*
+!.agents/skills/
+!.agents/skills/**
+.gemini/
+.qwen/
