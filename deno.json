@@ -1,8 +1,10 @@
-
 {
   "nodeModulesDir": "auto",
   "compilerOptions": {
     "exactOptionalPropertyTypes": true
   },
-  "unstable": ["fmt-component", "fmt-sql"]
+  "unstable": ["fmt-component", "fmt-sql"],
+  "imports": {
+    "@db/sqlite": "jsr:@db/sqlite@^0.13.0"
+  }
 }
