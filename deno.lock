@@ -3,11 +3,13 @@
   "specifiers": {
     "jsr:@db/sqlite@0.13": "0.13.0",
     "jsr:@denosaurs/plug@1": "1.1.0",
+    "jsr:@std/crypto@^1.1.0": "1.1.0",
     "jsr:@std/encoding@1": "1.0.11",
+    "jsr:@std/encoding@^1.0.11": "1.0.11",
     "jsr:@std/fmt@1": "1.0.10",
     "jsr:@std/fs@1": "1.0.24",
     "jsr:@std/internal@^1.0.14": "1.0.14",
-    "jsr:@std/path@1": "1.0.9",
+    "jsr:@std/path@1": "1.1.6",
     "jsr:@std/path@1.0": "1.0.9",
     "jsr:@std/path@^1.1.5": "1.1.6"
   },
@@ -22,11 +24,14 @@
     "@denosaurs/plug@1.1.0": {
       "integrity": "eb2f0b7546c7bca2000d8b0282c54d50d91cf6d75cb26a80df25a6de8c4bc044",
       "dependencies": [
-        "jsr:@std/encoding",
+        "jsr:@std/encoding@1",
         "jsr:@std/fmt",
         "jsr:@std/fs",
         "jsr:@std/path@1"
       ]
+    },
+    "@std/crypto@1.1.0": {
+      "integrity": "b8d6d0a6377a32b213af2661ed7bf1062d94feac0c57def5526a8e74a95c3ec8"
     },
     "@std/encoding@1.0.11": {
       "integrity": "e7cef2f0b3153bccc17431e7c864a1de03a4b6d9647389c43e08aaa775d37385"
@@ -56,7 +61,9 @@
   },
   "workspace": {
     "dependencies": [
-      "jsr:@db/sqlite@0.13"
+      "jsr:@db/sqlite@0.13",
+      "jsr:@std/crypto@^1.1.0",
+      "jsr:@std/encoding@^1.0.11"
     ]
   }
 }
