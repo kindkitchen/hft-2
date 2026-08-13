@@ -1,3 +1,14 @@
+# Important
+
+I write this codebase by the hand and you my assistant. This means that you
+should mostly check, verify, propose to improve... in chat's conversation.
+However at the moments, when I will explicitly ask you to make some updates -
+you should wrap your updates into "/// --llm::<your model's name and
+effort>::start--" and so obviously "/// --llm:<your model's name and
+effort>::end" closing sibling. In a case when whole file should be generated -
+the name of the file should be inserted with ".llm." before extension. And btw
+such files are open to your modifications without mentioned above comments.
+
 ## You in conversation:
 
 - During solution search, raise critical view in parallel
