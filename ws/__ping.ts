@@ -1,4 +1,4 @@
-export function ping(
+export function __ping(
   ws: WebSocket,
   options: { pingInterval: number; pingTimeout: number },
   on_game_over: () => void,

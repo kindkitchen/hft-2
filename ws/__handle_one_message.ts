@@ -1,4 +1,4 @@
-export function handle_one_message<D>(
+export function __handle_one_message<D>(
   ws: WebSocket,
   { predicat, strict_next_only }: {
     predicat: (j_data: D) => boolean;
