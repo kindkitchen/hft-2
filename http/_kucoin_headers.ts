@@ -3,6 +3,17 @@ import { encodeBase64 } from "@std/encoding";
 
 const te = new TextEncoder();
 
+/**
+ * https://www.kucoin.com/docs-new/authentication
+ */
+const X_SITE_TYPE = {
+  "X-SITE-TYPE":
+    new Intl.DateTimeFormat().resolvedOptions().timeZone.toLocaleLowerCase()
+        .includes("australia")
+      ? "australia"
+      : "global",
+};
+
 function stringify({
   endpoint,
   method,
@@ -91,7 +102,8 @@ export async function kucoin_headers(
     "KC-API-KEY": key,
     "KC-API-PASSPHRASE": signedPassphrase,
     "KC-API-KEY-VERSION": "3",
-    "Content-Type": "application/json",
+    ...X_SITE_TYPE,
+    "content-type": "application/json",
   } as const;
 
   return headers;
