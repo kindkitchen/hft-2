@@ -90,7 +90,7 @@ export async function kucoin_headers(
     "KC-API-TIMESTAMP": timestamp.toString(),
     "KC-API-KEY": key,
     "KC-API-PASSPHRASE": signedPassphrase,
-    "KC-API-KEY-VERSION": "2",
+    "KC-API-KEY-VERSION": "3",
     "Content-Type": "application/json",
   } as const;
 
