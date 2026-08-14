@@ -1,5 +1,6 @@
 import { apply_connect_token } from "../http/apply_connect_token.ts";
 import { handle_one_message } from "./_handle_one_message.ts";
+import { ping } from "./_ping.ts";
 
 let ws: WebSocket;
 const subscribers = new Map<string, ((data: string) => void)[]>();
@@ -9,6 +10,13 @@ async function ku_ws_public(symbols: string[], logic: (sData: string) => void) {
     const { data: { instanceServers, token } } = await apply_connect_token();
     const { endpoint, pingInterval, pingTimeout } = instanceServers[0];
     ws = new WebSocket(`${endpoint}?token=${token}`);
+    const pong = ping(ws, { pingInterval, pingTimeout }, () => {
+      for (const [pair, logics] of subscribers.entries()) {
+        for (const logic of logics) {
+          ku_ws_public([pair], logic);
+        }
+      }
+    });
     await handle_one_message<{ type: string }>(ws, {
       predicat: (d) => d.type === "welcome",
       strict_next_only: true,
@@ -17,6 +25,9 @@ async function ku_ws_public(symbols: string[], logic: (sData: string) => void) {
       const raw = ev.data;
       const jData = JSON.parse(raw);
       if (jData.type !== "message") {
+        if (jData.type === "pong") {
+          pong(jData);
+        }
         return;
       }
       let pair;
