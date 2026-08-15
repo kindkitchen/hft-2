@@ -9,7 +9,8 @@ export const ____string_with_symbols_tail = {
   },
   parse: (str: string) => {
     const [topic, _symbols] = str.split(":");
-    const symbols = new Set(_symbols.split(","))
+    const symbols_set = new Set(_symbols.split(","));
+    const symbols = symbols_set
       .values()
       .toArray()
       .sort();
@@ -17,7 +18,7 @@ export const ____string_with_symbols_tail = {
     return {
       symbols,
       topic,
-      symbols_dict: Object.fromEntries(symbols.map((s) => [s, s])),
+      symbols_set,
     };
   },
 };

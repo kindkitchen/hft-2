@@ -28,7 +28,7 @@ const parse_result = ____string_with_symbols_tail.parse(
 assert.assertEquals(parse_result, {
   symbols: ["google", "ok"],
   topic: "hello-world",
-  symbols_dict: { google: "google", ok: "ok" },
+  symbols_set: new Set(["google", "ok"]),
 });
 
 const stringify_result = ____string_with_symbols_tail.stringify(
