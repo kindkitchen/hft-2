@@ -10,6 +10,7 @@ So the `topic` property from `ws` subscriptions which are actually have
 - parse => stringify
 - remove possible duplicates
 - sort symbols during split/join
+- derive `topic:symbol` group keys (`topic_symbols` / `topic_symbols_set`)
 
 So the derivations both from parse of stringify processes can be used always
 same for same symbols.
@@ -27,8 +28,10 @@ const parse_result = ____string_with_symbols_tail.parse(
 
 assert.assertEquals(parse_result, {
   symbols: ["google", "ok"],
-  topic: "hello-world",
   symbols_set: new Set(["google", "ok"]),
+  topic: "hello-world",
+  topic_symbols: ["hello-world:google", "hello-world:ok"],
+  topic_symbols_set: new Set(["hello-world:google", "hello-world:ok"]),
 });
 
 const stringify_result = ____string_with_symbols_tail.stringify(

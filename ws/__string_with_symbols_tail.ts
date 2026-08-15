@@ -14,11 +14,15 @@ export const ____string_with_symbols_tail = {
       .values()
       .toArray()
       .sort();
+    const topic_symbols = symbols.map((s) => topic.concat(":", s));
+    const topic_symbols_set = new Set(topic_symbols);
 
     return {
       symbols,
-      topic,
       symbols_set,
+      topic,
+      topic_symbols,
+      topic_symbols_set,
     };
   },
 };
