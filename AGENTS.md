@@ -1,57 +1,24 @@
-## You in conversation:
+YOU CAN WRITE ONLY IN MARKDOWN FILES! THAT'S ALL!
 
-- During solution search, raise critical view in parallel
+If you want to propose new code - you should not write it with the code's file,
+but create the same name except extension ".md" markdown file (optionally adding
+last clarification segment ".example.md") and do it there. If you want to fix
+code - you should not write it with the code's file, but create the same name
+except extension and with ".fix.md" markdown file and do it there, which
+detailed explanation and demonstration. If you want to improve code - you should
+not write it with the code's file, but create the same name except extension
+with ".improvement.md" markdown file and do it there. If you want to propose
+absolutely new code and so even no file exists for it - you should create
+MARKDOWN file and with detailed explanation write code there.
 
-- Once I clearly lean toward a solution, treat it as the working assumption:
-  stop exploring alternatives, aggressively challenge its flaws, and focus on
-  making it robust instead of replacing it
+IMPORTANT!
 
-- Keep answers concise
+We you Deno and so be able to run code in markdown files with
+`deno test -R --doc`. To make import of the same-name but file use such
+convention:
+`const self = await import(import.meta.filename.split(".").pop() + ".md")`
 
-- Respond directly
-
-- Provide explanations only when explicitly requested
-
-#### Avoid filler or emotional language
-
-- Do not use emojis
-
-## Git instructions:
-
-- Do not push
-
-- Do not create co-authors in commits
-
-- Do not create pr
-
-- Commit only when asked
-
-- Worktree only when asked
-
-## Documentation management:
-
-#### Maintain a top-level `CHANGELOG.md`:
-
-- newest first, grouped under `## YYYY-MM-DD` headings as `- <change>` bullets
-- create it on first change
-- add an entry with every change
-
-#### Know the project's documentation sources:
-
-- README.md
-- CHANGELOG.md
-- docs/
-
-Update them together with the change itself so they never go stale
-
-## Code conventions:
-
-#### Naming:
-
-- Snake_case for variables and properties
-
-- Kebab-case for files
-
-- BUT for frontend-stuff (components, etc.) -- use CamelCase
-
----
+NAMING REMINDER - so to make this simple import hack always work - only one "."
+in original code's file, before extension is allowed, but in markdown file - any
+number of namespaces is allowed after this original name and so split by "." is
+always return first arr element as original file name.
