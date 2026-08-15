@@ -85,9 +85,15 @@ export function _subscribers_manager(ws: WebSocket) {
     ws.send(JSON.stringify({
       id: subscribe_ack_id,
       response: true,
-      type: "subscription",
+      type: "subscribe",
       topic: ____string_with_symbols_tail
-        .stringify(topic, fresh_topic_symbols_set.values().toArray()),
+        .stringify(
+          topic,
+          fresh_topic_symbols_set
+            .values()
+            .toArray()
+            .map((topic_symbols) => topic_symbols.split(":").pop()!),
+        ),
     }));
 
     return {
