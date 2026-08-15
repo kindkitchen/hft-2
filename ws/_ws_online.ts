@@ -1,25 +1,18 @@
 import { __ping } from "./__ping.ts";
+import { _subscribers_manager } from "./_subscribers_manager.ts";
 
 export function _ws_online(
-  subscribers: Map<
-    string, /// subject + topic
-    {
-      is_raw_data_expected: boolean;
-      on_data: (data: object | string) => void;
-      on_game_over?: () => void;
-    }[]
-  >,
+  _subscribers: ReturnType<typeof _subscribers_manager>["_subscribers"],
   {
     ws,
     pingInterval,
     pingTimeout,
-    on_game_over,
   }: {
-    on_game_over: () => void;
     ws: WebSocket;
     pingInterval: number;
     pingTimeout: number;
   },
+  on_game_over: () => void,
 ) {
   const pong = __ping(ws, { pingInterval, pingTimeout }, on_game_over);
 
@@ -35,18 +28,14 @@ export function _ws_online(
       return;
     }
 
-    const group: string = j_data.subject + j_data.topic;
-
-    for (const subscriber of subscribers.get(group) || []) {
-      if (subscriber.is_raw_data_expected) {
-        subscriber.on_data(raw_data);
+    /// ...WORKER
+    for (const s of _subscribers.get(j_data.topic)!) {
+      if (s.is_parsed_data_expected) {
+        s.on_data(j_data);
       } else {
-        subscriber.on_data(j_data);
+        s.on_data(raw_data);
       }
     }
+    /// WORKER...
   });
-
-  return {
-    ws,
-  };
 }
