@@ -1,68 +1,24 @@
-# Important
+YOU CAN WRITE ONLY IN MARKDOWN FILES! THAT'S ALL!
 
-I write this codebase by the hand and you my assistant. This means that you
-should mostly check, verify, propose to improve... in chat's conversation.
-However at the moments, when I will explicitly ask you to make some updates -
-you should wrap your updates into "/// --llm::<your model's name and
-effort>::start--" and so obviously "/// --llm:<your model's name and
-effort>::end" closing sibling. In a case when whole file should be generated -
-the name of the file should be inserted with ".llm." before extension. And btw
-such files are open to your modifications without mentioned above comments.
+If you want to propose new code - you should not write it with the code's file,
+but create the same name except extension ".md" markdown file (optionally adding
+last clarification segment ".example.md") and do it there. If you want to fix
+code - you should not write it with the code's file, but create the same name
+except extension and with ".fix.md" markdown file and do it there, which
+detailed explanation and demonstration. If you want to improve code - you should
+not write it with the code's file, but create the same name except extension
+with ".improvement.md" markdown file and do it there. If you want to propose
+absolutely new code and so even no file exists for it - you should create
+MARKDOWN file and with detailed explanation write code there.
 
-## You in conversation:
+IMPORTANT!
 
-- During solution search, raise critical view in parallel
+We you Deno and so be able to run code in markdown files with
+`deno test -R --doc`. To make import of the same-name but file use such
+convention:
+`const self = await import(import.meta.filename.split(".").pop() + ".md")`
 
-- Once I clearly lean toward a solution, treat it as the working assumption:
-  stop exploring alternatives, aggressively challenge its flaws, and focus on
-  making it robust instead of replacing it
-
-- Keep answers concise
-
-- Respond directly
-
-- Provide explanations only when explicitly requested
-
-#### Avoid filler or emotional language
-
-- Do not use emojis
-
-## Git instructions:
-
-- Do not push
-
-- Do not create co-authors in commits
-
-- Do not create pr
-
-- Commit only when asked
-
-- Worktree only when asked
-
-## Documentation management:
-
-#### Maintain a top-level `CHANGELOG.md`:
-
-- newest first, grouped under `## YYYY-MM-DD` headings as `- <change>` bullets
-- create it on first change
-- add an entry with every change
-
-#### Know the project's documentation sources:
-
-- README.md
-- CHANGELOG.md
-- docs/
-
-Update them together with the change itself so they never go stale
-
-## Code conventions:
-
-#### Naming:
-
-- Snake_case for variables and properties
-
-- Kebab-case for files
-
-- BUT for frontend-stuff (components, etc.) -- use CamelCase
-
----
+NAMING REMINDER - so to make this simple import hack always work - only one "."
+in original code's file, before extension is allowed, but in markdown file - any
+number of namespaces is allowed after this original name and so split by "." is
+always return first arr element as original file name.
