@@ -2,7 +2,7 @@ export const ____string_with_symbols_tail = {
   stringify: (topic: string, symbols: string[]) => {
     return topic
       .concat(":") + new Set(symbols)
-      .entries()
+      .values()
       .toArray()
       .sort()
       .join(",");
@@ -10,7 +10,7 @@ export const ____string_with_symbols_tail = {
   parse: (str: string) => {
     const [topic, _symbols] = str.split(":");
     const symbols = new Set(_symbols.split(","))
-      .entries()
+      .values()
       .toArray()
       .sort();
 
