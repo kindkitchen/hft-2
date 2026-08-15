@@ -42,7 +42,7 @@ export function _subscribers_manager(ws: WebSocket) {
         if (group.length === 0) {
           subscribers.delete(ts);
           state_topic_symbols_set.delete(ts);
-          unsubscribe_symbols.push(ts);
+          unsubscribe_symbols.push(ts.split(":").pop()!);
         }
       }
       const unsubscribe_ack_id = crypto.randomUUID();
