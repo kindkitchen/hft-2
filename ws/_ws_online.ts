@@ -29,7 +29,7 @@ export function _ws_online(
     }
 
     /// ...WORKER
-    for (const s of _subscribers.get(j_data.topic)!) {
+    for (const s of _subscribers.get(j_data.topic) || []) {
       if (s.is_parsed_data_expected) {
         s.on_data(j_data);
       } else {

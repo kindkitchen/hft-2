@@ -96,6 +96,13 @@ export function _subscribers_manager(ws: WebSocket) {
         ),
     }));
 
+    await __handle_one_message(ws, {
+      strict_next_only: false,
+      predicat: ({ id }: { id: string }) => {
+        return subscribe_ack_id === id;
+      },
+    });
+
     return {
       unsubscribe,
     };
