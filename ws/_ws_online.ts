@@ -13,7 +13,9 @@ export function _ws_online(
     pingTimeout: number;
   },
   on_game_over: () => void,
+  configuration?: { add_new_line_to_raw?: boolean },
 ) {
+  const { add_new_line_to_raw = true } = configuration || {};
   const pong = __ping(ws, { pingInterval, pingTimeout }, on_game_over);
 
   ws.addEventListener("message", (ev) => {
@@ -28,14 +30,19 @@ export function _ws_online(
       return;
     }
 
-    /// ...WORKER
+    Deno.stdout.write(new TextEncoder().encode(j_data.type));
     for (const s of _subscribers.get(j_data.topic) || []) {
       if (s.is_parsed_data_expected) {
         s.on_data(j_data);
       } else {
-        s.on_data(raw_data);
+        s.on_data(
+          raw_data +
+            // This is important! We opinionated about:
+            // - each message is one json-string line
+            // - only there we add "\n" as delimeter
+            "\n",
+        );
       }
     }
-    /// WORKER...
   });
 }
