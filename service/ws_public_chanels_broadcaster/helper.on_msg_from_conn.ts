@@ -1,6 +1,6 @@
 import { TextLineStream } from "@std/streams";
 
-export async function __on_message_from_conn(
+export async function on_msg_from_conn(
   conn: Deno.Conn,
   cb: (message: string, c: Deno.Conn) => void,
 ) {

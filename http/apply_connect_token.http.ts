@@ -1,4 +1,4 @@
-import { Credentials, kucoin_headers } from "./_kucoin_headers.ts";
+import { Credentials, kucoin_headers } from "./util.kucoin_headers.http.ts";
 
 /**
  * @description

@@ -17,12 +17,12 @@ same for same symbols.
 
 ```ts
 /// common self import the same name ts file (origin) ---------------
-const self = await import(import.meta.filename!.replace("md", "ts"));
+const self = await import(import.meta.filename!.replace("MD", "ts"));
 import * as assert from "@std/assert"; // also will be handy
 /// -----------------------------------------------------------------
 
-const { ____string_with_symbols_tail } = self;
-const parse_result = ____string_with_symbols_tail.parse(
+const { str_with_symbols_tail } = self;
+const parse_result = str_with_symbols_tail.parse(
   "hello-world:ok,google",
 );
 
@@ -34,7 +34,7 @@ assert.assertEquals(parse_result, {
   topic_symbols_set: new Set(["hello-world:google", "hello-world:ok"]),
 });
 
-const stringify_result = ____string_with_symbols_tail.stringify(
+const stringify_result = str_with_symbols_tail.stringify(
   "hello-world-2",
   ["ok", "ok", "ok", "google"],
 );

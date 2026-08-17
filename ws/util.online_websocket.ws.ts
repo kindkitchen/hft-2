@@ -1,14 +1,14 @@
-import { __ping } from "./__ping.ts";
-import { _subscribers_manager } from "./_subscribers_manager.ts";
+import { subscribers_manager } from "./util.subscribers_manager.ws.ts";
+import { Ws } from "./types.ws.ts";
+import { ping_pong } from "./helper.ping-pong.ws.ts";
 
-export function _ws_online(
-  _subscribers: ReturnType<typeof _subscribers_manager>["_subscribers"],
+export function online_websocket(
+  ws: Ws,
+  subscribers: ReturnType<typeof subscribers_manager>["subscribers"],
   {
-    ws,
     pingInterval,
     pingTimeout,
   }: {
-    ws: WebSocket;
     pingInterval: number;
     pingTimeout: number;
   },
@@ -16,9 +16,9 @@ export function _ws_online(
   configuration?: { add_new_line_to_raw?: boolean },
 ) {
   const { add_new_line_to_raw = true } = configuration || {};
-  const pong = __ping(ws, { pingInterval, pingTimeout }, on_game_over);
+  const { pong } = ping_pong(ws, { pingInterval, pingTimeout }, on_game_over);
 
-  ws.addEventListener("message", (ev) => {
+  ws.instance.addEventListener("message", (ev) => {
     const raw_data = ev.data;
     const j_data = JSON.parse(raw_data);
 
@@ -30,8 +30,7 @@ export function _ws_online(
       return;
     }
 
-    Deno.stdout.write(new TextEncoder().encode(j_data.type));
-    for (const s of _subscribers.get(j_data.topic) || []) {
+    for (const s of subscribers.get(j_data.topic) || []) {
       if (s.is_parsed_data_expected) {
         s.on_data(j_data);
       } else {

@@ -1,9 +1,9 @@
-import { make_ws } from "../ws/make_ws.ts";
+import { use_ws } from "../../ws/use_ws.ts";
 import { parseArgs } from "@std/cli";
-import { __on_message_from_conn } from "./__on_message_from_conn.ts";
-import { Communication_Msg } from "./_communication_message.ts";
+import { on_msg_from_conn } from "./helper.on_msg_from_conn.ts";
+import { internal_msg } from "./helper.internal_msg.ts";
 
-export async function ws_pub_broadcaster(configuration: {
+export async function ws_public_chanels_broadcaster(configuration: {
   socket_file?: string;
 }) {
   const {
@@ -15,7 +15,7 @@ export async function ws_pub_broadcaster(configuration: {
   } catch {}
 
   const listener = Deno.listen({ transport: "unix", path: socket_file });
-  const ws = await make_ws();
+  const ws = await use_ws();
   const te = new TextEncoder();
 
   for await (const con of listener) {
@@ -24,8 +24,8 @@ export async function ws_pub_broadcaster(configuration: {
         unsubscribe: (full_raw_topic?: string) => Promise<void>;
       }
       | null = null;
-    __on_message_from_conn(con, async (m) => {
-      const message = Communication_Msg.parse(m);
+    on_msg_from_conn(con, async (m) => {
+      const message = internal_msg.parse(m);
 
       if (typeof message === "string") {
         console.warn(`unexpected message from connected client:\n${message}`);
@@ -61,18 +61,18 @@ if (import.meta.main) {
 
   if (client) {
     const con = await Deno.connect({ transport: "unix", path: socket_file });
-    __on_message_from_conn(con, (m, c) => {
+    on_msg_from_conn(con, (m, c) => {
       console.log(m);
     });
     await con.write(
       new TextEncoder()
-        .encode(Communication_Msg.stringify({
+        .encode(internal_msg.stringify({
           topic: "/market/level2:ETH-USDT",
           send_ws: true,
           type: "subscribe",
         })),
     );
   } else {
-    await ws_pub_broadcaster({ socket_file });
+    await ws_public_chanels_broadcaster({ socket_file });
   }
 }

@@ -1,6 +1,11 @@
-export function __handle_one_message<D>(
-  ws: WebSocket,
-  { predicat, strict_next_only }: {
+import { Ws } from "./types.ws.ts";
+
+export function handle_one_message<D>(
+  ws: Ws,
+  {
+    predicat,
+    strict_next_only,
+  }: {
     predicat: (j_data: D) => boolean;
     strict_next_only?: boolean;
   },
@@ -13,10 +18,10 @@ export function __handle_one_message<D>(
       return;
     }
     resolve(data);
-    ws.removeEventListener("message", cb);
+    ws.instance.removeEventListener("message", cb);
   };
 
-  ws.addEventListener("message", cb);
+  ws.instance.addEventListener("message", cb);
 
   return promise;
 }
