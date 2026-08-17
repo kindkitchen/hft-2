@@ -1,5 +1,5 @@
 const PREFIX = "|msg|";
-type Internal_Msg_Content =
+export type Internal_Msg_Content =
   | {
     send_ws: true;
     type: "subscribe" | "unsubscribe";
