@@ -1,5 +1,6 @@
-import { __handle_one_message } from "./__handle_one_message.ts";
-import { ____string_with_symbols_tail } from "./__string_with_symbols_tail.ts";
+import { handle_one_message } from "./helper.handle_one_message.ws.ts";
+import { str_with_symbols_tail } from "./helper.str_with_symbols_tail.ws.ts";
+import { Ws } from "./types.ws.ts";
 
 type Subscriber_In =
   & {
@@ -8,9 +9,7 @@ type Subscriber_In =
   & (
     | {
       is_parsed_data_expected: true;
-      on_data: <T extends object>(
-        d: T,
-      ) => void;
+      on_data: <T extends object>(d: T) => void;
     }
     | {
       is_parsed_data_expected: false;
@@ -19,20 +18,13 @@ type Subscriber_In =
   );
 type Subscriber = Subscriber_In & {};
 
-export function _subscribers_manager(ws: WebSocket) {
+export function subscribers_manager(ws: Ws) {
   let state_topic_symbols_set = new Set<string>();
   const subscribers: Map<string, Subscriber[]> = new Map();
   const build_unsubscribe =
     (subscriber: Subscriber_In) => async (full_raw_topic?: string) => {
-      const {
-        topic,
-        symbols,
-        symbols_set,
-        topic_symbols,
-        topic_symbols_set,
-      } = ____string_with_symbols_tail.parse(
-        full_raw_topic || subscriber.topic,
-      );
+      const { topic, symbols, symbols_set, topic_symbols, topic_symbols_set } =
+        str_with_symbols_tail.parse(full_raw_topic || subscriber.topic);
 
       const unsubscribe_symbols = [] as string[];
       for (const ts of topic_symbols_set) {
@@ -46,28 +38,22 @@ export function _subscribers_manager(ws: WebSocket) {
         }
       }
       const unsubscribe_ack_id = crypto.randomUUID();
-      ws.send(JSON.stringify({
-        id: unsubscribe_ack_id,
-        response: true,
-        type: "unsubscribe",
-        topic: ____string_with_symbols_tail.stringify(
-          topic,
-          unsubscribe_symbols,
-        ),
-      }));
-      await __handle_one_message(ws, {
+      ws.instance.send(
+        JSON.stringify({
+          id: unsubscribe_ack_id,
+          response: true,
+          type: "unsubscribe",
+          topic: str_with_symbols_tail.stringify(topic, unsubscribe_symbols),
+        }),
+      );
+      await handle_one_message(ws, {
         strict_next_only: false,
         predicat: ({ id }: { id: string }) => id === unsubscribe_ack_id,
       });
     };
   const subscribe = async (subscriber: Subscriber_In) => {
-    const {
-      topic,
-      symbols,
-      symbols_set,
-      topic_symbols,
-      topic_symbols_set,
-    } = ____string_with_symbols_tail.parse(subscriber.topic);
+    const { topic, symbols, symbols_set, topic_symbols, topic_symbols_set } =
+      str_with_symbols_tail.parse(subscriber.topic);
     const fresh_topic_symbols_set = topic_symbols_set.difference(
       state_topic_symbols_set,
     );
@@ -82,21 +68,22 @@ export function _subscribers_manager(ws: WebSocket) {
     );
     const unsubscribe = build_unsubscribe(subscriber);
     const subscribe_ack_id = crypto.randomUUID();
-    ws.send(JSON.stringify({
-      id: subscribe_ack_id,
-      response: true,
-      type: "subscribe",
-      topic: ____string_with_symbols_tail
-        .stringify(
+    ws.instance.send(
+      JSON.stringify({
+        id: subscribe_ack_id,
+        response: true,
+        type: "subscribe",
+        topic: str_with_symbols_tail.stringify(
           topic,
           fresh_topic_symbols_set
             .values()
             .toArray()
             .map((topic_symbols) => topic_symbols.split(":").pop()!),
         ),
-    }));
+      }),
+    );
 
-    await __handle_one_message(ws, {
+    await handle_one_message(ws, {
       strict_next_only: false,
       predicat: ({ id }: { id: string }) => {
         return subscribe_ack_id === id;
@@ -110,7 +97,7 @@ export function _subscribers_manager(ws: WebSocket) {
 
   return {
     subscribe,
-    _subscribers: subscribers,
-    _state_topic_symbols_set: state_topic_symbols_set,
+    subscribers,
+    state_topic_symbols_set,
   };
 }

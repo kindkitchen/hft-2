@@ -1,4 +1,4 @@
-export const ____string_with_symbols_tail = {
+export const str_with_symbols_tail = {
   stringify: (topic: string, symbols: string[]) => {
     return topic
       .concat(":") + new Set(symbols)

@@ -1,4 +1,4 @@
-import { make_ws } from "./ws/make_ws.ts";
+import { use_ws } from "./ws/use_ws.ts";
 
 if (import.meta.main) {
 }
