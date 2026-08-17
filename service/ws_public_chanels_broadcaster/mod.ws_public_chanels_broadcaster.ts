@@ -1,6 +1,6 @@
 import { use_ws } from "../../ws/use_ws.ts";
 import { parseArgs } from "@std/cli";
-import { __on_message_from_conn } from "./helper.on_msg_from_conn.ts";
+import { on_msg_from_conn } from "./helper.on_msg_from_conn.ts";
 import { internal_msg } from "./helper.internal_msg.ts";
 
 export async function ws_public_chanels_broadcaster(configuration: {
@@ -24,7 +24,7 @@ export async function ws_public_chanels_broadcaster(configuration: {
         unsubscribe: (full_raw_topic?: string) => Promise<void>;
       }
       | null = null;
-    __on_message_from_conn(con, async (m) => {
+    on_msg_from_conn(con, async (m) => {
       const message = internal_msg.parse(m);
 
       if (typeof message === "string") {
@@ -61,7 +61,7 @@ if (import.meta.main) {
 
   if (client) {
     const con = await Deno.connect({ transport: "unix", path: socket_file });
-    __on_message_from_conn(con, (m, c) => {
+    on_msg_from_conn(con, (m, c) => {
       console.log(m);
     });
     await con.write(

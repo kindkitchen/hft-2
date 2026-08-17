@@ -1,14 +1,14 @@
 const PREFIX = "|msg|";
 type Internal_Msg_Content =
   | {
-      send_ws: true;
-      type: "subscribe" | "unsubscribe";
-      topic: string;
-    }
+    send_ws: true;
+    type: "subscribe" | "unsubscribe";
+    topic: string;
+  }
   | {
-      send_ws: false;
-      /// TODO
-    };
+    send_ws: false;
+    /// TODO
+  };
 
 export const internal_msg = {
   PREFIX,
