@@ -30,7 +30,6 @@ export function _ws_online(
       return;
     }
 
-    Deno.stdout.write(new TextEncoder().encode(j_data.type));
     for (const s of _subscribers.get(j_data.topic) || []) {
       if (s.is_parsed_data_expected) {
         s.on_data(j_data);
