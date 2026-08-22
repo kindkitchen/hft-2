@@ -70,6 +70,17 @@ export function subscribers_manager(ws: Ws) {
       fresh_topic_symbols_set,
     );
     const unsubscribe = build_unsubscribe(subscriber);
+    // Nothing fresh: every requested symbol is already subscribed upstream.
+    // The subscriber is registered for fan-out above, so just return —
+    // otherwise we would send a garbage frame with an empty symbol tail
+    // ("topic:") and hang waiting for an ack the server may never send.
+    // Mirrors the `unsubscribe_symbols.length === 0` early return in
+    // build_unsubscribe.
+    if (fresh_topic_symbols_set.size === 0) {
+      return {
+        unsubscribe,
+      };
+    }
     const subscribe_ack_id = crypto.randomUUID();
     ws.instance.send(
       JSON.stringify({
