@@ -28,15 +28,18 @@ export function subscribers_manager(ws: Ws) {
 
       const unsubscribe_symbols = [] as string[];
       for (const ts of topic_symbols_set) {
-        const group = subscribers.get(ts)!;
+        const group = subscribers.get(ts);
+        if (!group) continue;
         const i = group.findIndex((s) => s === subscriber);
-        void group.splice(i, 1);
+        if (i === -1) continue;
+        group.splice(i, 1);
         if (group.length === 0) {
           subscribers.delete(ts);
           state_topic_symbols_set.delete(ts);
           unsubscribe_symbols.push(ts.split(":").pop()!);
         }
       }
+      if (unsubscribe_symbols.length === 0) return;
       const unsubscribe_ack_id = crypto.randomUUID();
       ws.instance.send(
         JSON.stringify({

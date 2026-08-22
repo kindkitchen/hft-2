@@ -18,6 +18,7 @@
     "jsr:@std/path@1": "1.1.6",
     "jsr:@std/path@1.0": "1.0.9",
     "jsr:@std/path@^1.1.5": "1.1.6",
+    "jsr:@std/path@^1.1.6": "1.1.6",
     "jsr:@std/streams@*": "1.1.2",
     "jsr:@std/streams@^1.1.2": "1.1.2"
   },
@@ -96,6 +97,7 @@
       "jsr:@std/cli@^1.0.32",
       "jsr:@std/crypto@^1.1.0",
       "jsr:@std/encoding@^1.0.11",
+      "jsr:@std/path@^1.1.6",
       "jsr:@std/streams@^1.1.2"
     ]
   }
