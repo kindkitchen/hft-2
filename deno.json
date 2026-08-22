@@ -10,6 +10,7 @@
     "@std/cli": "jsr:@std/cli@^1.0.32",
     "@std/crypto": "jsr:@std/crypto@^1.1.0",
     "@std/encoding": "jsr:@std/encoding@^1.0.11",
+    "@std/path": "jsr:@std/path@^1.1.6",
     "@std/streams": "jsr:@std/streams@^1.1.2"
   }
 }
